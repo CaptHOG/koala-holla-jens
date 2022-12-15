@@ -1,40 +1,50 @@
-console.log( 'js' );
+$( document ).ready(onReady);
 
-$( document ).ready( function(){
-  console.log( 'JQ' );
-  // Establish Click Listeners
-  setupClickListeners()
-  // load existing koalas on page load
-  getKoalas();
-
-}); // end doc ready
-
-function setupClickListeners() {
-  $( '#addButton' ).on( 'click', function(){
-    console.log( 'in addButton on click' );
-    // get user input and put in an object
-    // NOT WORKING YET :(
-    // using a test object
-    let koalaToSend = {
-      name: 'testName',
-      age: 'testName',
-      gender: 'testName',
-      readyForTransfer: 'testName',
-      notes: 'testName',
-    };
-    // call saveKoala with the new obejct
-    saveKoala( koalaToSend );
-  }); 
+function onReady() {
+  console.log('DOM ready');
+  getAndRenderKoalas();
+  $('#addButton').on('click', saveKoala);
 }
 
-function getKoalas(){
+
+// let koalaToSend = {
+//   name: 'testName',
+//   gender: 'testName',
+//   age: 'testName',
+//   readyForTransfer: 'testName',
+//   notes: 'testName',
+// };
+
+// saveKoala( koalaToSend );
+
+
+function getAndRenderKoalas(){
   console.log( 'in getKoalas' );
-  // ajax call to server to get koalas
-  
+  // ajax call to server to GET koalas
+  $.ajax({
+    method: 'GET',
+    url: '/koalas'
+  }).then((response) => {
+    console.log(response);
+    $('#viewKoalas').empty();
+    for (let koala of response) {
+      $('#viewKoalas').append(`
+      <tr>
+        <td>${koala.name}</td>
+        <td>${koala.gender}</td>
+        <td>${koala.age}</td>
+        <td>${koala.ready_for_transfer}</td>
+        <td>${koala.notes}</td>
+        <td><button>Ready for Transfer</button></td>
+        <td><button>Delete</button></td>
+      </tr>
+      `);
+    }
+  })
 } // end getKoalas
 
 function saveKoala( newKoala ){
   console.log( 'in saveKoala', newKoala );
-  // ajax call to server to get koalas
+  // ajax call to server to POST koalas
  
 }
