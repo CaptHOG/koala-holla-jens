@@ -7,13 +7,7 @@ function onReady() {
 }
 
 
-// let koalaToSend = {
-//   name: 'testName',
-//   gender: 'testName',
-//   age: 'testName',
-//   readyForTransfer: 'testName',
-//   notes: 'testName',
-// };
+
 
 // saveKoala( koalaToSend );
 
@@ -46,5 +40,27 @@ function getAndRenderKoalas(){
 function saveKoala( newKoala ){
   console.log( 'in saveKoala', newKoala );
   // ajax call to server to POST koalas
- 
+  let newName = $('#nameIn').val();
+  let newAge = $('#ageIn').val();
+  let newGender = $('#genderIn').val();
+  let newReadyForTransfer = $('#readyForTransferIn').val();
+  let newNotes = $('#notesIn').val();
+
+  let koalaToSend = {
+    name: newName,
+    age: newAge,
+    gender: newGender,
+    readyForTransfer: newReadyForTransfer,
+    notes: newNotes,
+  };
+
+  $.ajax({
+    method: 'POST',
+    url: '/koalas',
+    data: koalaToSend
+  }).then((response) => {
+    getAndRenderKoalas();
+  }).catch((error) => {
+    console.log('something broke in saveKoala POST', error);
+  })
 }

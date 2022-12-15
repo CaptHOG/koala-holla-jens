@@ -23,7 +23,10 @@ koalaRouter.get('/', (req, res) => {
   });
 
 // POST
-
+koalaRouter.post('/', (req, res) => {
+    let newKoala = req.body;
+    console.log('adding koala', newKoala);
+})
 
 // PUT
 
