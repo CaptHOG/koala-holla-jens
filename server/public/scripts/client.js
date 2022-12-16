@@ -6,6 +6,8 @@ function onReady() {
   $('#addButton').on('click', saveKoala);
   $('body').on('click', '.deleteKoalaButton', deleteKoala);
   $('body').on('click', '.markReadyButton', readyKoalaForTransfer);
+  $('body').on('click', '.markReadyButton', appendMarkReadyButton);
+
 }
 
 
@@ -19,19 +21,33 @@ function getAndRenderKoalas(){
     console.log(response);
     $('#viewKoalas').empty();
     for (let koala of response) {
-      $('#viewKoalas').append(`
-      <tr data-id=${koala.id}>
-        <td>${koala.name}</td>
-        <td>${koala.gender}</td>
-        <td>${koala.age}</td>
-        <td>${koala.ready_for_transfer}</td>
-        <td>${koala.notes}</td>
-        <td><button class="markReadyButton">Ready for Transfer</button></td>
-        <td><button class="deleteKoalaButton">Delete</button></td>
-      </tr>
-      `);
+      if (koala.ready_for_transfer === 0) {
+        $('#viewKoalas').append(`
+        <tr data-id=${koala.id}>
+          <td>${koala.name}</td>
+          <td>${koala.gender}</td>
+          <td>${koala.age}</td>
+          <td>${koala.ready_for_transfer}</td>
+          <td>${koala.notes}</td>
+          <td><button class="markReadyButton">Ready for Transfer</button></td>
+          <td><button class="deleteKoalaButton">Delete</button></td>
+        </tr>
+        `);
+      } else {
+        $('#viewKoalas').append(`
+        <tr data-id=${koala.id}>
+          <td>${koala.name}</td>
+          <td>${koala.gender}</td>
+          <td>${koala.age}</td>
+          <td>${koala.ready_for_transfer}</td>
+          <td>${koala.notes}</td>
+          <td></td>
+          <td><button class="deleteKoalaButton">Delete</button></td>
+        </tr>
+        `);
+      }
     }
-  })
+  });
 }
 
 function saveKoala(){
@@ -98,3 +114,9 @@ function readyKoalaForTransfer() {
     console.log('readyKoalaForTransfer not working', error);
   })
 }
+
+// function appendMarkReadyButton() {
+//   $('.markReadyColumn').append(`
+//   <button class="markReadyButton">Ready for Transfer</button>
+//   `);
+// }
