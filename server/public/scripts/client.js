@@ -6,12 +6,6 @@ function onReady() {
   $('#addButton').on('click', saveKoala);
   $('body').on('click', '.deleteKoalaButton', deleteKoala);
   $('body').on('click', '.markReadyButton', readyKoalaForTransfer);
-  Swal.fire({
-    title: 'Say bye to Koala?',
-    showCancelButton: true,
-    confirmButtonText: 'Evanesco!',
-  
-})
 }
 
 
@@ -89,12 +83,6 @@ function deleteKoala() {
   console.log('koala removed');
   let idToDelete = $(this).parent().parent().data().id;
   console.log(idToDelete);
-
-  // Swal.fire({
-  //   title: 'Say bye to Koala?',
-  //   showCancelButton: true,
-  //   confirmButtonText: 'Evanesco!',
-  // })
 
   $.ajax({
     method: 'DELETE',
