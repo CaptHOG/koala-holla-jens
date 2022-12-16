@@ -6,8 +6,12 @@ function onReady() {
   $('#addButton').on('click', saveKoala);
   $('body').on('click', '.deleteKoalaButton', deleteKoala);
   $('body').on('click', '.markReadyButton', readyKoalaForTransfer);
-  $('body').on('click', '.markReadyButton', appendMarkReadyButton);
-
+  Swal.fire({
+    title: 'Say bye to Koala?',
+    showCancelButton: true,
+    confirmButtonText: 'Evanesco!',
+  
+})
 }
 
 
@@ -21,7 +25,7 @@ function getAndRenderKoalas(){
     console.log(response);
     $('#viewKoalas').empty();
     for (let koala of response) {
-      if (koala.ready_for_transfer === 0) {
+      if (koala.ready_for_transfer == 0) {
         $('#viewKoalas').append(`
         <tr data-id=${koala.id}>
           <td>${koala.name}</td>
@@ -85,6 +89,13 @@ function deleteKoala() {
   console.log('koala removed');
   let idToDelete = $(this).parent().parent().data().id;
   console.log(idToDelete);
+
+  // Swal.fire({
+  //   title: 'Say bye to Koala?',
+  //   showCancelButton: true,
+  //   confirmButtonText: 'Evanesco!',
+  // })
+
   $.ajax({
     method: 'DELETE',
     url: `/koalas/${idToDelete}`
@@ -114,9 +125,3 @@ function readyKoalaForTransfer() {
     console.log('readyKoalaForTransfer not working', error);
   })
 }
-
-// function appendMarkReadyButton() {
-//   $('.markReadyColumn').append(`
-//   <button class="markReadyButton">Ready for Transfer</button>
-//   `);
-// }
