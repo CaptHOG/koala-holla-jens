@@ -30,8 +30,8 @@ koalaRouter.post('/', (req, res) => {
     let sqlQuery = `
         INSERT INTO "koalas" ("name", "age", "gender", "ready_for_transfer", "notes")
             VALUES ($1, $2, $3, $4, $5);
-    `;
-    let sqlValues = [newKoala.name, newKoala.age, newKoala.gender, newKoala.ready_for_transfer, newKoala.notes];
+    `
+    let sqlValues = [newKoala.name, newKoala.age, newKoala.gender, newKoala.readyForTransfer, newKoala.notes];
     pool.query(sqlQuery, sqlValues)
     .then((dbRes) => {
         res.sendStatus(201);
@@ -46,5 +46,24 @@ koalaRouter.post('/', (req, res) => {
 
 
 // DELETE
+koalaRouter.delete('/:id', (req, res) => {
+    console.log(req.params);
+    let idToDelete = req.params.id;
+
+    let sqlQuery = `
+        DELETE FROM "koalas"
+            WHERE "id"=$1;
+    `
+    let sqlValues = [idToDelete];
+    pool.query(sqlQuery, sqlValues)
+        .then((dbRes) => {
+            res.sendStatus(200);
+        })
+        .catch((dbErr) => {
+            console.log('something went wrong in DELETE /koalas/:id', dbErr);
+            res.sendStatus(500);
+        })
+})
+
 
 module.exports = koalaRouter;

@@ -4,13 +4,8 @@ function onReady() {
   console.log('DOM ready');
   getAndRenderKoalas();
   $('#addButton').on('click', saveKoala);
-  $('body').on('click', '#deleteKoalaButton', deleteKoala);
+  $('body').on('click', '.deleteKoalaButton', deleteKoala);
 }
-
-
-
-
-// saveKoala( koalaToSend );
 
 
 function getAndRenderKoalas(){
@@ -31,15 +26,15 @@ function getAndRenderKoalas(){
         <td>${koala.ready_for_transfer}</td>
         <td>${koala.notes}</td>
         <td><button>Ready for Transfer</button></td>
-        <td><button id="deleteKoalaButton">Delete</button></td>
+        <td data-id=${koala.id}><button class="deleteKoalaButton">Delete</button></td>
       </tr>
       `);
     }
   })
-} // end getKoalas
+}
 
-function saveKoala(newKoala){
-  console.log( 'in saveKoala', newKoala );
+function saveKoala(){
+  console.log( 'in saveKoala');
   // ajax call to server to POST koalas
   let newName = $('#nameIn').val();
   let newAge = $('#ageIn').val();
@@ -71,4 +66,15 @@ function saveKoala(newKoala){
 
 function deleteKoala() {
   console.log('koala removed');
+  let idToDelete = $(this).parent().data().id;
+  console.log(idToDelete);
+  $.ajax({
+    method: 'DELETE',
+    url: `/koalas/${idToDelete}`
+  }).then((response) => {
+    console.log(response);
+    getAndRenderKoalas();
+  }).catch((error) => {
+    console.log('deleteKoala not working', error);
+  })
 }
